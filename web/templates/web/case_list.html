@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Item List
+{% endblock %}
+
+{% block content %}
+<h1>
+  Case List
+</h1>
+
+<div class="row">
+  <div class="col-6">
+   <table class="table">
+     <tr>
+       <th>ID</th>
+       <th>Case</th>
+       <th>Memo</th>
+       <th>CreatedBy</th>
+     </tr>
+     {% for o in object_list %}
+     <tr>
+       <td>
+         <a href="{%url 'web:case_detail' pk=o.pk%}">
+          {{o.id}}
+         </a>
+       </td>
+       <td>{{o.item.name}}</td>
+       <td>{{o.memo}}</td>
+       <td>{{o.created_by}}</td>
+     </tr>
+     {% endfor %}
+   </table>
+  </div>
+  <div class="col-6">
+    <a class="btn btn-info" href="{%url 'web:case_create' %}">Case Create</a>
+  </div>
+</div>
+{% endblock %}

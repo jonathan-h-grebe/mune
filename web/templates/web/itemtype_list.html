@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+ItemType List
+{% endblock %}
+
+{% block content %}
+<h1>
+  ItemType List
+</h1>
+
+<div class="row">
+  <div class="col-6">
+   <table class="table">
+     <tr>
+       <th>ID</th>
+       <th>装置分類</th>
+       <th>登録件数</th>
+     </tr>
+     {% for o in object_list %}
+     <tr>
+       <td>{{o.id}}</td>
+       <td>{{o.name}}</td>
+       <td>{{o.item_set.count}}</td>
+     </tr>
+     {% endfor %}
+   </table>
+  </div>
+<!--  <div class="col-6">-->
+<!--    <p>-->
+<!--      <a class="btn btn-info" href="{%url 'web:item_create' %}">Item Create</a>-->
+<!--    </p>-->
+<!--  </div>-->
+</div>
+{% endblock %}

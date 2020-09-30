@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+Item Detail
+{% endblock %}
+
+{% block content %}
+<h1>
+  装置詳細
+</h1>
+
+<div class="row">
+  <div class="col-6">
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <td>{{object.pk}}</td>
+      </tr>
+      <tr>
+        <th>装置名</th>
+        <td>{{object.name}}</td>
+      </tr>
+      <tr>
+        <th>装置分類</th>
+        <td>{{object.item_type.name}}</td>
+      </tr>
+      <tr>
+        <th>高さ</th>
+        <td>{{object.height}}</td>
+      </tr>
+      <tr>
+        <th>横幅</th>
+        <td>{{object.width}}</td>
+      </tr>
+      <tr>
+        <th>奥行</th>
+        <td>{{object.depth}}</td>
+      </tr>
+      <tr>
+        <th>登録日時</th>
+        <td>{{object.created_at}}</td>
+      </tr>
+      <tr>
+        <th>登録者</th>
+        <td>{{object.created_by}}</td>
+      </tr>
+      <tr>
+        <th>最終更新日時</th>
+        <td>{{object.last_updated_at}}</td>
+      </tr>
+      <tr>
+        <th>最終更新者</th>
+        <td>{{object.last_updated_by}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-6">
+    {% if request.user == object.created_by %}
+    <p>
+      <a class="btn btn-info" href="{%url 'web:item_edit' pk=object.pk%}">編集</a>
+    </p>
+    {% endif %}
+    <p>
+      <a class="btn btn-primary" href="{%url 'web:case_create' %}?item={{object.pk}}">問い合わせ</a>
+    </p>
+    <p>
+
+    </p>
+  </div>
+</div>
+{% endblock %}
