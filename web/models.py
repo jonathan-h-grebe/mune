@@ -23,6 +23,14 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Area(BaseModel):
+    name = models.CharField(max_length=10, verbose_name="都道府県名")
+    region = models.CharField(max_length=10, verbose_name="地域")
+
+    def __str__(self):
+        return self.name
+
+
 class ItemType(BaseModel):
     name = models.CharField(max_length=100, verbose_name="装置分類名")
 
@@ -41,6 +49,7 @@ class Item(BaseModel):
     width = models.FloatField(verbose_name="横幅")
     depth = models.FloatField(verbose_name="奥行")
     price_type = models.CharField(max_length=30, verbose_name="価格帯", choices=CHOICES_PRICE_TYPE)
+    area = models.ForeignKey(Area, verbose_name="在庫都道府県", on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         return "Item{}_{}".format(self.pk, self.name)

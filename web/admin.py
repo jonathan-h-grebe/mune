@@ -10,6 +10,7 @@ from web.models import *
 # class CaseAdmin(admin.ModelAdmin):
 #     list_display = ["__all__"]
 
+admin.site.register(Area)
 admin.site.register(ItemType)
 admin.site.register(CaseType)
 admin.site.register(Item)

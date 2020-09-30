@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 from django.urls import reverse
@@ -46,11 +47,23 @@ class ItemList(ListView):
     model = Item
     template_name = "web/item_list.html"
 
+    def get_queryset(self):
+        try:
+            if self.request.GET:
+                params = self.request.GET.copy()
+                query = Item.objects.filter(**params.dict())
+                return query
+            else:
+                return super().get_queryset()
+        except Exception as e:
+            messages.error(self.request, e)
+            return super().get_queryset()
+
 
 class ItemCreate(LoginRequiredMixin, CreateView):
     model = Item
     template_name = "web/item_create.html"
-    fields = ['name', 'item_type', "price_type", 'height', "width", "depth", ]
+    fields = ['name', 'item_type', 'area', "price_type", 'height', "width", "depth", ]
 
     def get_success_url(self):
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
@@ -64,7 +77,7 @@ class ItemCreate(LoginRequiredMixin, CreateView):
 class ItemUpdate(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = "web/item_create.html"
-    fields = ['name', 'item_type', "price_type", 'height', "width", "depth", ]
+    fields = ['name', 'item_type', 'area', "price_type", 'height', "width", "depth", ]
 
     def get_success_url(self):
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
