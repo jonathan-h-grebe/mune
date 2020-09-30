@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-ItemType List
+Area List
 {% endblock %}
 
 {% block content %}
 <h1>
-  分類から探す
+  エリアから探す
 </h1>
 
 <div class="row">
@@ -14,18 +14,20 @@ ItemType List
    <table class="table">
      <tr>
        <th>ID</th>
-       <th>装置分類</th>
+       <th>地方</th>
+       <th>都道府県</th>
        <th>登録件数</th>
        <th></th>
      </tr>
      {% for o in object_list %}
      <tr>
        <td>{{o.id}}</td>
+       <td>{{o.region}}</td>
        <td>{{o.name}}</td>
        <td>{{o.item_set.count}}</td>
        <td>
          {% if o.item_set.count > 0 %}
-         <a href="{%url 'web:item_list'%}?item_type={{o.id}}" class="btn btn-primary">
+         <a href="{%url 'web:item_list'%}?area={{o.id}}" class="btn btn-primary">
            Check
          </a>
          {% endif %}

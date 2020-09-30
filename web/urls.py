@@ -13,13 +13,14 @@ urlpatterns = [
     path('item/create', views.ItemCreate.as_view(), name='item_create'),
     path('item/<int:pk>', views.ItemDetail.as_view(), name='item_detail'),
     path('item/<int:pk>/edit', views.ItemUpdate.as_view(), name='item_edit'),
+    path('item/type', views.ItemTypeList.as_view(), name='item_type_list'),
+    path('item/area', views.AreaList.as_view(), name='area_list'),
     # case
     path('case', views.CaseList.as_view(), name='case_list'),
     path('case/create', views.CaseCreate.as_view(), name='case_create'),
     path('case/<int:pk>', views.CaseDetail.as_view(), name='case_detail'),
     path('case/<int:pk>/edit', views.CaseUpdate.as_view(), name='case_edit'),
-    # item type
-    path('item/type', views.ItemTypeList.as_view(), name='item_type_list'),
+
     #
     path('company', views.CompanyInfo.as_view(), name='company'),
     path('company/advantage', views.AdvantageInfo.as_view(), name='advantage'),

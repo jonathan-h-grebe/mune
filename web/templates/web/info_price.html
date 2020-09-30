@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+Test
+{% endblock %}
+
+{% block content %}
+<h1>
+  利用料金
+</h1>
+
+<div class="row">
+  <div class="col-6">
+    {{request.method}}
+  </div>
+  <div class="col-6">
+    {{request.path}}
+  </div>
+</div>
+{% endblock %}

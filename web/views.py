@@ -20,27 +20,27 @@ class NewInfo(TemplateView):
 
 class FlowInfo(TemplateView):
     """装置を売る＞掲載〜契約までの流れ"""
-    template_name = "web/main.html"
+    template_name = "web/info_flow.html"
 
 
 class PriceInfo(TemplateView):
     """装置を売る＞利用料金"""
-    template_name = "web/main.html"
+    template_name = "web/info_price.html"
 
 
 class Question(TemplateView):
     """装置を売る＞よくある質問"""
-    template_name = "web/main.html"
+    template_name = "web/info_question.html"
 
 
 class CompanyInfo(TemplateView):
     """会社情報"""
-    template_name = "web/main.html"
+    template_name = "web/info_company.html"
 
 
 class AdvantageInfo(TemplateView):
     """XXXの強み"""
-    template_name = "web/main.html"
+    template_name = "web/info_advantage.html"
 
 
 class ItemList(ListView):
@@ -139,4 +139,9 @@ class CaseDetail(LoginRequiredMixin, DetailView):
 class ItemTypeList(ListView):
     model = ItemType
     template_name = "web/itemtype_list.html"
+
+
+class AreaList(ListView):
+    model = Area
+    template_name = "web/area_list.html"
 
