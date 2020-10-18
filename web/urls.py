@@ -28,4 +28,7 @@ urlpatterns = [
     path('sell/flow', views.FlowInfo.as_view(), name='sell_flow'),
     path('sell/question', views.Question.as_view(), name='sell_question'),
     path('sell/price', views.PriceInfo.as_view(), name='sell_price'),
+    # user
+    path('my_item', views.MyItemList.as_view(), name='my_item_list'),
+    path('item/accept_request', views.AcceptRequest.as_view(), name='accept_request'),
 ]

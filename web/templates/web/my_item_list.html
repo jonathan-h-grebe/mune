@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+My　Item List
+{% endblock %}
+
+{% block content %}
+<h1>
+  自分の出品情報
+</h1>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>ステータス</th>
+        <th>装置名</th>
+        <th>装置分類</th>
+        <th>在庫都道府県</th>
+        <th>価格帯</th>
+        <th>高さ</th>
+        <th>横幅</th>
+        <th>奥行</th>
+        <th>画像</th>
+        <th>問い合わせ件数</th>
+      </tr>
+      {% for o in object_list %}
+      <tr>
+        <td>
+          <a href="{%url 'web:item_detail' pk=o.id%}">{{o.id}}</a>
+        </td>
+        <td>{{o.status}}</td>
+        <td>{{o.name}}</td>
+        <td>{{o.item_type.name}}</td>
+        <td>{{o.area.name}}</td>
+        <td>{{o.price_type}}</td>
+        <td>{{o.height}}</td>
+        <td>{{o.width}}</td>
+        <td>{{o.depth}}</td>
+        <td>
+          {%if o.image01%}
+          <img src="{{o.image01.url}}" class="img-thumbnail" width="100">
+          {%endif%}
+        </td>
+        <td>
+          {{o.case_set.count}}件
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

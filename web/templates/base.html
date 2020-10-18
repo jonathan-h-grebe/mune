@@ -90,6 +90,9 @@
                 ログアウト
               </a>
               {% endif %}
+              <a class="dropdown-item" href="{% url 'web:my_item_list' %}">
+                自分の出品情報
+              </a>
               {% if request.user.is_staff %}
               <a class="dropdown-item" href="/admin">
                 Admin

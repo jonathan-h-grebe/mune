@@ -72,9 +72,11 @@ Item Detail
          href="{%url 'web:case_create' %}?item={{object.pk}}">問い合わせ</a>
     </p>
     {% if object.status == '作成中' %}
-    <p>
-      <a class="btn btn-warning" href="">承認依頼</a>
-    </p>
+    <form method="POST" action="{%url 'web:accept_request2'%}">
+      {% csrf_token %}
+      <input type="hidden" value="{{object.pk}}" name="pk">
+      <button type="submit" class="btn btn-warning">承認依頼</button>
+    </form>
     {% endif %}
   </div>
 </div>

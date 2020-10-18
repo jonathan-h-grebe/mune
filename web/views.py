@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
+from django.views.generic import FormView, RedirectView, View
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from web.models import *
+from web.forms import *
 # Create your views here.
 
 
@@ -98,6 +100,11 @@ class ItemDetail(DetailView):
     model = Item
     template_name = "web/item_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['form_accept_request'] = AcceptRequestForm()
+        return context
+
 
 class CaseList(LoginRequiredMixin, ListView):
     model = Case
@@ -151,4 +158,40 @@ class ItemTypeList(ListView):
 class AreaList(ListView):
     model = Area
     template_name = "web/area_list.html"
+
+
+class MyItemList(LoginRequiredMixin, ListView):
+    model = Item
+    template_name = "web/my_item_list.html"
+
+    def get_queryset(self):
+        try:
+            query = Item.objects.filter(created_by=self.request.user)
+            if self.request.GET:
+                params = self.request.GET.copy()
+                query = query.filter(**params.dict())
+                return query
+            else:
+                return query
+        except Exception as e:
+            messages.error(self.request, e)
+            return super().get_queryset()
+
+
+class AcceptRequest(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        try:
+            item = Item.objects.get(pk=request.POST['pk'])
+            if item.status == "作成中":
+                item.status = "承認待ち"
+                item.save()
+                messages.success(self.request, "承認依頼を発出しました。2")
+            else:
+                messages.danger(self.request, "承認依頼対象外です。")
+        except Exception as e:
+            print(e)
+            messages.error(self.request, e)
+        finally:
+            return redirect('web:my_item_list')
 
