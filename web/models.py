@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django_currentuser.middleware import get_current_authenticated_user
 # Create your models here.
 
 
@@ -10,17 +11,23 @@ class BaseModel(models.Model):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name="%(app_label)s_%(class)s_created_by",
-        verbose_name="作成者",
+        verbose_name="作成者", editable=False
     )
     last_updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name="%(app_label)s_%(class)s_last_updated_by",
-        verbose_name="最終更新者"
+        verbose_name="最終更新者", editable=False
     )
     is_active = models.BooleanField(default=True, verbose_name="有効")
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.created_by = get_current_authenticated_user()
+        self.last_updated_by = get_current_authenticated_user()
+        super(BaseModel, self).save(*args, **kwargs)
 
 
 class Area(BaseModel):
@@ -36,6 +43,10 @@ class ItemType(BaseModel):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "装置分類"
+        verbose_name_plural = "装置分類"
 
 
 class Item(BaseModel):
@@ -54,12 +65,20 @@ class Item(BaseModel):
     def __str__(self):
         return "Item{}_{}".format(self.pk, self.name)
 
+    class Meta:
+        verbose_name = "商品情報"
+        verbose_name_plural = "商品情報"
+
 
 class CaseType(BaseModel):
     name = models.CharField(max_length=100, verbose_name="問い合わせ分類")
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "問い合わせ分類"
+        verbose_name_plural = "問い合わせ分類"
 
 
 class Case(BaseModel):
@@ -75,3 +94,6 @@ class Case(BaseModel):
     def __str__(self):
         return "Case{}_{}".format(self.pk, self.item.name)
 
+    class Meta:
+        verbose_name = "問い合わせ"
+        verbose_name_plural = "問い合わせ"

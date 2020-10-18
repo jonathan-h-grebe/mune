@@ -1,17 +1,23 @@
 from django.contrib import admin
 from web.models import *
+from web.forms import *
 # Register your models here.
 
-#
-# class ItemAdmin(admin.ModelAdmin):
-#     list_display = ["__all__"]
-#
-#
-# class CaseAdmin(admin.ModelAdmin):
-#     list_display = ["__all__"]
+
+class ItemAdmin(admin.ModelAdmin):
+    form = ItemForm
+    list_display = ("name", "item_type", "last_updated_at", "last_updated_by")
+    readonly_fields = ("created_by", "created_at", "last_updated_by", "last_updated_at")
+
+
+class CaseAdmin(admin.ModelAdmin):
+    list_display = ("item", "case_type", "memo", "last_updated_at", "last_updated_by")
+    readonly_fields = ("created_by", "created_at", "last_updated_by", "last_updated_at")
+
+
 
 admin.site.register(Area)
 admin.site.register(ItemType)
 admin.site.register(CaseType)
-admin.site.register(Item)
-admin.site.register(Case)
+admin.site.register(Item, ItemAdmin)
+admin.site.register(Case, CaseAdmin)

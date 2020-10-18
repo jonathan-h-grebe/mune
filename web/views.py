@@ -69,8 +69,8 @@ class ItemCreate(LoginRequiredMixin, CreateView):
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.created_by_id = self.request.user.id
-        form.instance.last_updated_by_id = self.request.user.id
+        # form.instance.created_by_id = self.request.user.id
+        # form.instance.last_updated_by_id = self.request.user.id
         return super(ItemCreate, self).form_valid(form)
 
 
@@ -83,7 +83,7 @@ class ItemUpdate(LoginRequiredMixin, UpdateView):
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.last_updated_by_id = self.request.user.id
+        # form.instance.last_updated_by_id = self.request.user.id
         return super(ItemUpdate, self).form_valid(form)
 
 
@@ -113,8 +113,8 @@ class CaseCreate(LoginRequiredMixin, CreateView):
         return reverse('web:case_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.created_by_id = self.request.user.id
-        form.instance.last_updated_by_id = self.request.user.id
+        # form.instance.created_by_id = self.request.user.id
+        # form.instance.last_updated_by_id = self.request.user.id
         return super(CaseCreate, self).form_valid(form)
 
 
@@ -127,7 +127,7 @@ class CaseUpdate(LoginRequiredMixin, UpdateView):
         return reverse('web:case_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.last_updated_by_id = self.request.user.id
+        # form.instance.last_updated_by_id = self.request.user.id
         return super(CaseUpdate, self).form_valid(form)
 
 
