@@ -49,12 +49,13 @@ class ItemList(ListView):
 
     def get_queryset(self):
         try:
+            query = Item.objects.exclude(status__in=("作成中", "承認待ち"))
             if self.request.GET:
                 params = self.request.GET.copy()
-                query = Item.objects.filter(**params.dict())
+                query = query.filter(**params.dict())
                 return query
             else:
-                return super().get_queryset()
+                return query
         except Exception as e:
             messages.error(self.request, e)
             return super().get_queryset()
@@ -63,7 +64,10 @@ class ItemList(ListView):
 class ItemCreate(LoginRequiredMixin, CreateView):
     model = Item
     template_name = "web/item_create.html"
-    fields = ['name', 'item_type', 'area', "price_type", 'height', "width", "depth", ]
+    fields = [
+        'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
+        "image01",
+    ]
 
     def get_success_url(self):
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
@@ -77,7 +81,10 @@ class ItemCreate(LoginRequiredMixin, CreateView):
 class ItemUpdate(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = "web/item_create.html"
-    fields = ['name', 'item_type', 'area', "price_type", 'height', "width", "depth", ]
+    fields = [
+        'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
+        "image01",
+    ]
 
     def get_success_url(self):
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})

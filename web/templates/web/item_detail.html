@@ -11,10 +11,17 @@ Item Detail
 
 <div class="row">
   <div class="col-6">
+    {% if object.image01 %}
+      <img src="{{object.image01.url}}" class="img-thumbnail" width="400">
+      {% endif %}
     <table class="table">
       <tr>
         <th>ID</th>
         <td>{{object.pk}}</td>
+      </tr>
+      <tr>
+        <th>ステータス</th>
+        <td>{{object.status}}</td>
       </tr>
       <tr>
         <th>装置名</th>
@@ -61,11 +68,14 @@ Item Detail
     </p>
     {% endif %}
     <p>
-      <a class="btn btn-primary" href="{%url 'web:case_create' %}?item={{object.pk}}">問い合わせ</a>
+      <a class="btn btn-primary {% if object.status != '承認済み' %}disabled{% endif %}"
+         href="{%url 'web:case_create' %}?item={{object.pk}}">問い合わせ</a>
     </p>
+    {% if object.status == '作成中' %}
     <p>
-
+      <a class="btn btn-warning" href="">承認依頼</a>
     </p>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

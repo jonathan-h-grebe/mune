@@ -51,8 +51,12 @@ class ItemType(BaseModel):
 
 class Item(BaseModel):
     CHOICES_PRICE_TYPE = (
-        ("〜1千万円", "〜1千万円"), ("1千万円~1億円", "1千万円~1億円"),
-        ("1億円〜", "1億円〜")
+        ("〜1千万円", "〜1千万円"), ("1千万円~1億円", "1千万円~1億円"), ("1億円〜", "1億円〜")
+    )
+    CHOICES_STATUS = (
+        ("作成中", "作成中"), ("承認待ち", "承認待ち"),
+        ("承認済み", "承認済み"), ("商談中", "商談中"),
+        ("成約済み", "成約済み"), ("取り下げ", "取り下げ"),
     )
     name = models.CharField(max_length=100, verbose_name="名前")
     item_type = models.ForeignKey(ItemType, on_delete=models.DO_NOTHING, verbose_name="装置分類")
@@ -61,6 +65,8 @@ class Item(BaseModel):
     depth = models.FloatField(verbose_name="奥行")
     price_type = models.CharField(max_length=30, verbose_name="価格帯", choices=CHOICES_PRICE_TYPE)
     area = models.ForeignKey(Area, verbose_name="在庫都道府県", on_delete=models.DO_NOTHING, null=True)
+    status = models.CharField(max_length=20, verbose_name="ステータス", choices=CHOICES_STATUS, default="作成中")
+    image01 = models.ImageField(verbose_name="画像01", blank=True, null=True, upload_to="images/")
 
     def __str__(self):
         return "Item{}_{}".format(self.pk, self.name)

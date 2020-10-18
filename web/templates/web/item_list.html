@@ -21,6 +21,7 @@ Item List
         <th>高さ</th>
         <th>横幅</th>
         <th>奥行</th>
+        <th>画像</th>
       </tr>
       {% for o in object_list %}
       <tr>
@@ -34,6 +35,11 @@ Item List
         <td>{{o.height}}</td>
         <td>{{o.width}}</td>
         <td>{{o.depth}}</td>
+        <td>
+          {%if o.image01%}
+          <img src="{{o.image01.url}}" class="img-thumbnail" width="100">
+          {%endif%}
+        </td>
       </tr>
       {% endfor %}
     </table>
