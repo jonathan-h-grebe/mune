@@ -102,7 +102,6 @@ class ItemDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['form_accept_request'] = AcceptRequestForm()
         return context
 
 
