@@ -179,6 +179,10 @@ class MyItemList(LoginRequiredMixin, ListView):
 
 class AcceptRequest(LoginRequiredMixin, View):
 
+    def get(self, request):
+        messages.warning(self.request, "許可されていない操作です")
+        return redirect('web:my_item_list')
+
     def post(self, request, *args, **kwargs):
         try:
             item = Item.objects.get(pk=request.POST['pk'])
@@ -187,7 +191,7 @@ class AcceptRequest(LoginRequiredMixin, View):
                 item.save()
                 messages.success(self.request, "承認依頼を発出しました。2")
             else:
-                messages.danger(self.request, "承認依頼対象外です。")
+                messages.warning(self.request, "承認依頼対象外です。")
         except Exception as e:
             print(e)
             messages.error(self.request, e)
