@@ -178,6 +178,9 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 ACCOUNT_EMAIL_VERIFICATION = "none"  # mandatory / optional / none
 AUTH_USER_MODEL = "accounts.CustomUser"
+ACCOUNT_FORMS = {
+'signup': 'accounts.forms.CustomSignupForm',
+}
 
 
 # django_heroku
