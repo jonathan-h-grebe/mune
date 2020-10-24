@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'bootstrap4',
+    'django_extensions',
     #'accounts.apps.AccountsConfig',
 ]
 
