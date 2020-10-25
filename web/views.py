@@ -114,15 +114,22 @@ class CaseCreate(CreateView):
     model = Case
     template_name = "web/case_create.html"
     fields = [
-        'item', 'case_type', "memo",
+        # 'item',
+        'case_type', "memo", "item_list",
         "user_name", "mail_address", "tel_number", "company_name", "company_address"
     ]
 
     def get_initial(self):
-        item = get_object_or_404(Item, pk=self.request.GET.get('item'))
+        # item = get_object_or_404(Item, pk=self.request.GET.get('item'))
+        item_list = self.request.GET.getlist("item_list", [])
         res = {
-            "item": item
+            "item": None,
+            "item_list": list(),
         }
+        for i in item_list:
+            item = get_object_or_404(Item, pk=i)
+            res["item_list"].append(item)
+
         if self.request.user.is_authenticated:
             res["user_name"] = "{} {}".format(self.request.user.last_name, self.request.user.first_name)
             res["mail_address"] = self.request.user.email
@@ -143,7 +150,11 @@ class CaseCreate(CreateView):
 class CaseUpdate(LoginRequiredMixin, UpdateView):
     model = Case
     template_name = "web/case_create.html"
-    fields = ['item', 'case_type', "memo", ]
+    fields = [
+        # 'item',
+        'case_type', "memo", "item_list",
+        "user_name", "mail_address", "tel_number", "company_name", "company_address"
+    ]
 
     def get_success_url(self):
         return reverse('web:case_detail', kwargs={'pk': self.object.pk})
@@ -175,6 +186,24 @@ class MyItemList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         try:
             query = Item.objects.filter(created_by=self.request.user)
+            if self.request.GET:
+                params = self.request.GET.copy()
+                query = query.filter(**params.dict())
+                return query
+            else:
+                return query
+        except Exception as e:
+            messages.error(self.request, e)
+            return super().get_queryset()
+
+
+class MyCaseList(LoginRequiredMixin, ListView):
+    model = Case
+    template_name = "web/my_case_list.html"
+
+    def get_queryset(self):
+        try:
+            query = Case.objects.filter(created_by=self.request.user)
             if self.request.GET:
                 params = self.request.GET.copy()
                 query = query.filter(**params.dict())

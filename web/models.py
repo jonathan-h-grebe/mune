@@ -94,8 +94,8 @@ class Case(BaseModel):
     )
     # Fields
     objects = None
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="商品")
-    memo = models.TextField(verbose_name="備考")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="商品", blank=True, null=True)
+    memo = models.TextField(verbose_name="備考", blank=True, null=True)
     assigned_at = models.DateTimeField(verbose_name="アサイン日時", blank=True, null=True)
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name="assigned_to",
@@ -106,15 +106,17 @@ class Case(BaseModel):
     user_name = models.CharField(max_length=30, verbose_name="氏名", blank=True, null=True, )
     mail_address = models.EmailField(verbose_name="メールアドレス", blank=True, null=True, )
     company_name = models.CharField(
-        max_length=100, verbose_name="会社名", blank=True, null=True, default=None,
+        max_length=100, verbose_name="会社名", blank=True, null=True,
     )
     company_address = models.CharField(
-        max_length=100, verbose_name="会社住所", blank=True, null=True, default=None,
+        max_length=100, verbose_name="会社住所", blank=True, null=True,
     )
     tel_number = models.CharField(
         validators=[tel_number_regex], max_length=15, verbose_name='携帯電話番号',
-        blank=True, null=True, default=None,
+        blank=True, null=True,
     )
+    # いくつもItemを紐付ける
+    item_list = models.ManyToManyField(Item, verbose_name="問い合わせ商品", blank=True, related_name="item_list")
 
     def __str__(self):
         return "Case{}_{}".format(self.pk, self.item.name)

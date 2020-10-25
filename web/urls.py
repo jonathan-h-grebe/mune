@@ -30,5 +30,6 @@ urlpatterns = [
     path('sell/price', views.PriceInfo.as_view(), name='sell_price'),
     # user
     path('my_item', views.MyItemList.as_view(), name='my_item_list'),
+    path('my_case', views.MyCaseList.as_view(), name='my_case_list'),
     path('item/accept_request', views.AcceptRequest.as_view(), name='accept_request'),
 ]

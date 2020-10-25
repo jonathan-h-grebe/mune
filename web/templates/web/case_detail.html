@@ -19,9 +19,13 @@ Case Detail
       <tr>
         <th>装置名</th>
         <td>
-          <a href="{%url 'web:item_detail' pk=object.item.pk%}">
-            {{object.item.name}}
-          </a>
+          {% for item in object.item_list.all %}
+          <p>
+            <a href="{%url 'web:item_detail' pk=item.pk%}">
+              {{item.name}}
+            </a>
+          </p>
+          {% endfor %}
         </td>
       </tr>
       <tr>
