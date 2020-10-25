@@ -22,6 +22,7 @@ Item List
         <th>横幅</th>
         <th>奥行</th>
         <th>画像</th>
+        <th>問い合わせ</th>
       </tr>
       {% for o in object_list %}
       <tr>
@@ -39,6 +40,17 @@ Item List
           {%if o.image01%}
           <img src="{{o.image01.url}}" class="img-thumbnail" width="100">
           {%endif%}
+        </td>
+        <td>
+          {% if o.status == '承認済み' or o.status == '商談中' %}
+          <a class="btn btn-primary"
+         href="{%url 'web:case_create' %}?item={{o.pk}}">問い合せ</a>
+<!--          <a class="btn btn-warning">ウォッチ</a>-->
+          {% else %}
+          <a class="btn btn-primary disabled"
+         href="{%url 'web:case_create' %}?item={{o.pk}}">{{o.status}}</a>
+<!--          <a class="btn btn-warning disabled">{{o.status}}</a>-->
+          {% endif %}
         </td>
       </tr>
       {% endfor %}

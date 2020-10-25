@@ -51,7 +51,7 @@ class ItemList(ListView):
 
     def get_queryset(self):
         try:
-            query = Item.objects.exclude(status__in=("作成中", "承認待ち"))
+            query = Item.objects.exclude(status__in=("作成中", "承認待ち", "取り下げ"))
             if self.request.GET:
                 params = self.request.GET.copy()
                 query = query.filter(**params.dict())
