@@ -123,7 +123,7 @@ class CaseCreate(CreateView):
         res = {
             "item": item
         }
-        if self.request.user:
+        if self.request.user.is_authenticated:
             res["user_name"] = "{} {}".format(self.request.user.last_name, self.request.user.first_name)
             res["mail_address"] = self.request.user.email
             res["tel_number"] = self.request.user.tel_number
