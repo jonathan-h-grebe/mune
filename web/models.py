@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django_currentuser.middleware import get_current_authenticated_user
+from django.core.validators import RegexValidator
 # Create your models here.
 
 
@@ -88,6 +89,11 @@ class CaseType(BaseModel):
 
 
 class Case(BaseModel):
+    tel_number_regex = RegexValidator(
+        regex=r'^[0-9]+$', message=("携帯電話番号はハイフンなしで入力してください"),
+    )
+    # Fields
+    objects = None
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="商品")
     memo = models.TextField(verbose_name="備考")
     assigned_at = models.DateTimeField(verbose_name="アサイン日時", blank=True, null=True)
@@ -96,6 +102,19 @@ class Case(BaseModel):
         verbose_name="担当者", blank=True, null=True
     )
     case_type = models.ForeignKey(CaseType, on_delete=models.DO_NOTHING, verbose_name="問い合わせ分類")
+    # 2020/10/25追加
+    user_name = models.CharField(max_length=30, verbose_name="氏名", blank=True, null=True, )
+    mail_address = models.EmailField(verbose_name="メールアドレス", blank=True, null=True, )
+    company_name = models.CharField(
+        max_length=100, verbose_name="会社名", blank=True, null=True, default=None,
+    )
+    company_address = models.CharField(
+        max_length=100, verbose_name="会社住所", blank=True, null=True, default=None,
+    )
+    tel_number = models.CharField(
+        validators=[tel_number_regex], max_length=15, verbose_name='携帯電話番号',
+        blank=True, null=True, default=None,
+    )
 
     def __str__(self):
         return "Case{}_{}".format(self.pk, self.item.name)

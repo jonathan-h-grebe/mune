@@ -110,16 +110,25 @@ class CaseList(LoginRequiredMixin, ListView):
     template_name = "web/case_list.html"
 
 
-class CaseCreate(LoginRequiredMixin, CreateView):
+class CaseCreate(CreateView):
     model = Case
     template_name = "web/case_create.html"
-    fields = ['item', 'case_type', "memo", ]
+    fields = [
+        'item', 'case_type', "memo",
+        "user_name", "mail_address", "tel_number", "company_name", "company_address"
+    ]
 
     def get_initial(self):
         item = get_object_or_404(Item, pk=self.request.GET.get('item'))
         res = {
             "item": item
         }
+        if self.request.user:
+            res["user_name"] = "{} {}".format(self.request.user.last_name, self.request.user.first_name)
+            res["mail_address"] = self.request.user.email
+            res["tel_number"] = self.request.user.tel_number
+            res["company_name"] = self.request.user.company_name
+            res["company_address"] = self.request.user.company_address
         return res
 
     def get_success_url(self):
