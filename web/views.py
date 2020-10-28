@@ -236,3 +236,26 @@ class AcceptRequest(LoginRequiredMixin, View):
         finally:
             return redirect('web:my_item_list')
 
+
+class Favorite(View):
+    def get(self, request):
+        idlist = request.session.get('idlist', list())
+        if request.GET.get('id', None):
+            id = int(request.GET['id'])
+            if not id in idlist:
+                idlist.append(id)
+        request.session['idlist'] = idlist
+        request.COOKIES['idlist'] = idlist
+        messages.info(request, "{}".format(request.session['idlist']))
+        return redirect('web:item_list')
+
+
+class FavoriteItemList(TemplateView):
+    template_name = "web/favorite_item_list.html"
+
+    def get_context_data(self, **kwargs):
+        idlist = self.request.session.get('idlist', list())
+        context = {
+            'object_list': Item.objects.filter(id__in=idlist),
+        }
+        return context

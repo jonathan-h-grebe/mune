@@ -32,4 +32,7 @@ urlpatterns = [
     path('my_item', views.MyItemList.as_view(), name='my_item_list'),
     path('my_case', views.MyCaseList.as_view(), name='my_case_list'),
     path('item/accept_request', views.AcceptRequest.as_view(), name='accept_request'),
+    #
+    path('favorite', views.Favorite.as_view(), name='favorite'),
+    path('favorite_item', views.FavoriteItemList.as_view(), name='favorite_item_list'),
 ]
