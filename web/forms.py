@@ -20,7 +20,6 @@ class ItemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["tel_number"].required = True
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
         instance = kwargs.get("instance")
