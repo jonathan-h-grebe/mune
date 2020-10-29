@@ -112,15 +112,17 @@ class CaseList(LoginRequiredMixin, ListView):
 
 class CaseCreate(CreateView):
     model = Case
+    form_class = CaseForm
     template_name = "web/case_create.html"
-    fields = [
-        # 'item',
-        'case_type', "memo", "item_list",
-        "user_name", "mail_address", "tel_number", "company_name", "company_address"
-    ]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        item_list = self.request.GET.getlist("item_list", [])
+        status_list = ("商談中", "承認済み")
+        context['items'] = Item.objects.filter(id__in=item_list, status__in=status_list)
+        return context
 
     def get_initial(self):
-        # item = get_object_or_404(Item, pk=self.request.GET.get('item'))
         item_list = self.request.GET.getlist("item_list", [])
         res = {
             "item": None,
@@ -145,6 +147,14 @@ class CaseCreate(CreateView):
         # form.instance.created_by_id = self.request.user.id
         # form.instance.last_updated_by_id = self.request.user.id
         return super(CaseCreate, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Exception as e:
+            print(e)
+            messages.error(request, e)
+            return redirect('web:item_list')
 
 
 class CaseUpdate(LoginRequiredMixin, UpdateView):

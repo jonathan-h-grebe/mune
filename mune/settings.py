@@ -187,3 +187,15 @@ ACCOUNT_FORMS = {
 # django_heroku
 import django_heroku #追加
 django_heroku.settings(locals()) #追加
+
+
+# messages framework
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'info',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

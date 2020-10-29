@@ -29,7 +29,13 @@ Item List
         </tr>
         {% for o in object_list %}
         <tr>
-          <td><input type="checkbox" name="item_list" value="{{o.pk}}"></td>
+          <td>
+            {% if o.status == '承認済み' or o.status == '商談中' %}
+            <input type="checkbox" name="item_list" value="{{o.pk}}">
+            {% else %}
+            <input type="checkbox" name="item_list" value="{{o.pk}}" disabled="disabled">
+            {% endif %}
+          </td>
           <td>
             <a href="{%url 'web:item_detail' pk=o.id%}">{{o.id}}</a>
           </td>
@@ -56,11 +62,9 @@ Item List
             <a class="btn btn-warning"
                href="{%url 'web:favorite' %}?id={{o.pk}}">気になる</a>
             {% endif %}
-  <!--          <a class="btn btn-warning">ウォッチ</a>-->
             {% else %}
             <a class="btn btn-primary disabled"
            href="{%url 'web:case_create' %}?item_list={{o.pk}}">{{o.status}}</a>
-  <!--          <a class="btn btn-warning disabled">{{o.status}}</a>-->
             {% endif %}
           </td>
         </tr>

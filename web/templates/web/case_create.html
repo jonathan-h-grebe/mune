@@ -10,17 +10,42 @@ Case Create
 </h1>
 
 <div class="row">
-  <div class="col-6">
+  <div class="col-12">
+    <h4>問い合わせ商品</h4>
+    <table class="table table-sm">
+      <tr>
+        <th>No</th>
+        <th>商品名</th>
+        <th>分類</th>
+      </tr>
+      {% for item in items %}
+      <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.item_type}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <h4>入力欄</h4>
     <form method="POST">
       <table class="table">
         {% csrf_token %}
-        {{form.as_table}}
+        {% for f in form %}
+        {% if f.label == '問い合わせ商品' %}
+        {{f.as_hidden}}
+        {% else %}
+        <tr>
+          <th>{{f.label_tag}}</th>
+          <td>{{f}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
       </table>
       <input class="btn btn-primary" type="submit" value="保存">
     </form>
   </div>
   <div class="col-6">
-
+    {{form.item_list.as_hidden}}
   </div>
 </div>
 {% endblock %}
