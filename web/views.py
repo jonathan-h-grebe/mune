@@ -68,7 +68,7 @@ class ItemCreate(LoginRequiredMixin, CreateView):
     template_name = "web/item_create.html"
     fields = [
         'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
-        "image01",
+        "image01", "image02", "image03", "image04", "image05",
     ]
 
     def get_success_url(self):
@@ -85,7 +85,7 @@ class ItemUpdate(LoginRequiredMixin, UpdateView):
     template_name = "web/item_create.html"
     fields = [
         'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
-        "image01",
+        "image01", "image02", "image03", "image04", "image05",
     ]
 
     def get_success_url(self):

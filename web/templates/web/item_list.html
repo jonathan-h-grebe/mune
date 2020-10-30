@@ -47,8 +47,8 @@ Item List
           <td>{{o.width}}</td>
           <td>{{o.depth}}</td>
           <td>
-            {%if o.image01%}
-            <img src="{{o.image01.url}}" class="img-thumbnail" width="100">
+            {%if o.get_first_image%}
+            <img src="{{o.get_first_image.url}}" class="img-thumbnail" width="100">
             {%endif%}
           </td>
           <td>

@@ -68,6 +68,10 @@ class Item(BaseModel):
     area = models.ForeignKey(Area, verbose_name="在庫都道府県", on_delete=models.DO_NOTHING, null=True)
     status = models.CharField(max_length=20, verbose_name="ステータス", choices=CHOICES_STATUS, default="作成中")
     image01 = models.ImageField(verbose_name="画像01", blank=True, null=True, upload_to="images/")
+    image02 = models.ImageField(verbose_name="画像02", blank=True, null=True, upload_to="images/")
+    image03 = models.ImageField(verbose_name="画像03", blank=True, null=True, upload_to="images/")
+    image04 = models.ImageField(verbose_name="画像04", blank=True, null=True, upload_to="images/")
+    image05 = models.ImageField(verbose_name="画像05", blank=True, null=True, upload_to="images/")
 
     def __str__(self):
         return "Item{}_{}".format(self.pk, self.name)
@@ -75,6 +79,34 @@ class Item(BaseModel):
     class Meta:
         verbose_name = "商品情報"
         verbose_name_plural = "商品情報"
+
+    def get_images(self):
+        images = list()
+        if self.image01:
+            images.append(self.image01)
+        if self.image02:
+            images.append(self.image02)
+        if self.image03:
+            images.append(self.image03)
+        if self.image04:
+            images.append(self.image04)
+        if self.image05:
+            images.append(self.image05)
+        return images
+
+    def get_first_image(self):
+        if self.image01:
+            return self.image01
+        elif self.image02:
+            return self.image02
+        elif self.image03:
+            return self.image03
+        elif self.image04:
+            return self.image04
+        elif self.image05:
+            return self.image05
+        else:
+            return False
 
 
 class CaseType(BaseModel):
