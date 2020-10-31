@@ -7,16 +7,12 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from web.models import *
 from web.forms import *
+from datetime import datetime, timedelta
 # Create your views here.
 
 
 class Main(TemplateView):
     """トップページ"""
-    template_name = "web/main.html"
-
-
-class NewInfo(TemplateView):
-    """装置を買う＞新着情報"""
     template_name = "web/main.html"
 
 
@@ -54,7 +50,21 @@ class ItemList(ListView):
             query = Item.objects.exclude(status__in=("作成中", "承認待ち", "取り下げ"))
             if self.request.GET:
                 params = self.request.GET.copy()
-                query = query.filter(**params.dict())
+                #reqのurlパラメータから、Itemのfieldと該当するものを取得
+                item_field_params = dict()
+                for p in params:
+                    try:
+                        Item._meta.get_field(p)
+                        item_field_params[p] = params[p]
+                    except Exception as e:
+                        pass
+                query = query.filter(**item_field_params)
+
+                #「新着情報」リンク経由の場合
+                if 'period' in params:
+                    #TODO: periodパラメータにより、直近期間を調整すること
+                    earliest_date = datetime.now() -  timedelta(days=90)
+                    query = query.filter(created_at__gte= earliest_date)
                 return query
             else:
                 return query

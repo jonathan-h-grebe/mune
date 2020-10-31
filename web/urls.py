@@ -24,7 +24,7 @@ urlpatterns = [
     #
     path('company', views.CompanyInfo.as_view(), name='company'),
     path('company/advantage', views.AdvantageInfo.as_view(), name='advantage'),
-    path('buy/new', views.NewInfo.as_view(), name='buy_new'),
+
     path('sell/flow', views.FlowInfo.as_view(), name='sell_flow'),
     path('sell/question', views.Question.as_view(), name='sell_question'),
     path('sell/price', views.PriceInfo.as_view(), name='sell_price'),
