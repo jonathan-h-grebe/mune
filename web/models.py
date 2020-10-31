@@ -161,33 +161,33 @@ class Case(BaseModel):
         verbose_name = "問い合わせ"
         verbose_name_plural = "問い合わせ"
 
-    def save(self, *args, **kwargs):
-        if self.pk:
-            return super(Case, self).save(*args, **kwargs)
-        else:
-            res = super(Case, self).save(*args, **kwargs)
-            self.refresh_from_db()
-            try:
-                text = "<p>問い合わせを受け付けました</p><br><p>問い合わせ商品：</p>"
-                for i, item in enumerate(self.item_list.all()):
-                    text += '<p> {}. {}</p>'.format(i+1, item.name)
-                text += "<p>問い合わせ内容：{}</p>".format(self.case_type.name)
-                text += "<p>問い合わせ詳細：{}</p>".format(self.memo)
-                text += "<p>氏名：{}<br>".format(self.user_name)
-                text += "<p>メールアドレス：{}</p>".format(self.mail_address)
-                text += "<p>電話番号：{}</p>".format(self.tel_number)
-                text += "<p>会社名：{}</p>".format(self.company_name)
-                text += "<p>会社住所：{}</p>".format(self.company_address)
-                if self.mail_address:
-                    send_mail(
-                        "【MachineMart】問い合わせを受け付けました",
-                        text,
-                        "no-reply@machine-mart.com",
-                        [self.mail_address, ],
-                        fail_silently=False,
-                        html_message=text
-                    )
-            except Exception as e:
-                print(e)
-                print("Failed to send email for {}".format(self))
-            return res
+    # def save(self, *args, **kwargs):
+    #     if self.pk:
+    #         return super(Case, self).save(*args, **kwargs)
+    #     else:
+    #         res = super(Case, self).save(*args, **kwargs)
+    #         self.refresh_from_db()
+    #         try:
+    #             text = "<p>問い合わせを受け付けました</p><br><p>問い合わせ商品：</p>"
+    #             for i, item in enumerate(self.item_list.all()):
+    #                 text += '<p> {}. {}</p>'.format(i+1, item.name)
+    #             text += "<p>問い合わせ内容：{}</p>".format(self.case_type.name)
+    #             text += "<p>問い合わせ詳細：{}</p>".format(self.memo)
+    #             text += "<p>氏名：{}<br>".format(self.user_name)
+    #             text += "<p>メールアドレス：{}</p>".format(self.mail_address)
+    #             text += "<p>電話番号：{}</p>".format(self.tel_number)
+    #             text += "<p>会社名：{}</p>".format(self.company_name)
+    #             text += "<p>会社住所：{}</p>".format(self.company_address)
+    #             if self.mail_address:
+    #                 send_mail(
+    #                     "【MachineMart】問い合わせを受け付けました",
+    #                     text,
+    #                     "no-reply@machine-mart.com",
+    #                     [self.mail_address, ],
+    #                     fail_silently=False,
+    #                     html_message=text
+    #                 )
+    #         except Exception as e:
+    #             print(e)
+    #             print("Failed to send email for {}".format(self))
+    #         return res

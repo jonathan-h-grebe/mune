@@ -160,13 +160,32 @@ class CaseCreate(CreateView):
             return reverse('web:main')
 
     def form_valid(self, form):
-        # form.instance.created_by_id = self.request.user.id
-        # form.instance.last_updated_by_id = self.request.user.id
-        return super(CaseCreate, self).form_valid(form)
+        res = super(CaseCreate, self).form_valid(form)
+        text = "<p>問い合わせを受け付けました</p><br><p>問い合わせ商品：</p>"
+        for i, item in enumerate(self.object.item_list.all()):
+            text += '<p> {}. {}</p>'.format(i + 1, item.name)
+        text += "<p>問い合わせ内容：{}</p>".format(self.object.case_type.name)
+        text += "<p>問い合わせ詳細：{}</p>".format(self.object.memo)
+        text += "<p>氏名：{}<br>".format(self.object.user_name)
+        text += "<p>メールアドレス：{}</p>".format(self.object.mail_address)
+        text += "<p>電話番号：{}</p>".format(self.object.tel_number)
+        text += "<p>会社名：{}</p>".format(self.object.company_name)
+        text += "<p>会社住所：{}</p>".format(self.object.company_address)
+        if self.object.mail_address:
+            send_mail(
+                "【MachineMart】問い合わせを受け付けました",
+                text,
+                "no-reply@machine-mart.com",
+                [self.object.mail_address, ],
+                fail_silently=False,
+                html_message=text
+            )
+        return res
 
     def get(self, request, *args, **kwargs):
         try:
-            return super().get(request, *args, **kwargs)
+            res = super().get(request, *args, **kwargs)
+            return res
         except Exception as e:
             print(e)
             messages.error(request, e)
