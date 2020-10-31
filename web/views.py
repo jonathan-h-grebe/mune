@@ -82,6 +82,7 @@ class ItemCreate(LoginRequiredMixin, CreateView):
     ]
 
     def get_success_url(self):
+        messages.success(self.request, "商品を登録しました")
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
@@ -99,6 +100,7 @@ class ItemUpdate(LoginRequiredMixin, UpdateView):
     ]
 
     def get_success_url(self):
+        messages.success(self.request, "商品を更新しました")
         return reverse('web:item_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
@@ -181,11 +183,17 @@ class CaseUpdate(LoginRequiredMixin, UpdateView):
     ]
 
     def get_success_url(self):
+        messages.success(self.request, "問い合わせを更新しました")
         return reverse('web:case_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         # form.instance.last_updated_by_id = self.request.user.id
         return super(CaseUpdate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['items'] = self.object.item_list.all()
+        return context
 
 
 class CaseDetail(LoginRequiredMixin, DetailView):
@@ -251,7 +259,7 @@ class AcceptRequest(LoginRequiredMixin, View):
             if item.status == "作成中":
                 item.status = "承認待ち"
                 item.save()
-                messages.success(self.request, "承認依頼を発出しました。2")
+                messages.success(self.request, "承認依頼を発出しました。")
             else:
                 messages.warning(self.request, "承認依頼対象外です。")
         except Exception as e:
@@ -270,7 +278,7 @@ class Favorite(View):
                 idlist.append(id)
         request.session['idlist'] = idlist
         request.COOKIES['idlist'] = idlist
-        messages.info(request, "{}".format(request.session['idlist']))
+        messages.success(request, "お気に入りに追加しました")
         return redirect('web:item_list')
 
 
