@@ -78,6 +78,13 @@ Item Detail
       <button type="submit" class="btn btn-warning">承認依頼</button>
     </form>
     {% endif %}
+    {% if object.pk in request.session.idlist %}
+    <a class="btn btn-warning disabled"
+       href="{%url 'web:favorite' %}?id={{object.pk}}">追加済み</a>
+    {% else %}
+    <a class="btn btn-warning"
+       href="{%url 'web:favorite' %}?id={{object.pk}}">気になる</a>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

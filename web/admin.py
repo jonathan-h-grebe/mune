@@ -6,15 +6,14 @@ from web.forms import *
 
 class ItemAdmin(admin.ModelAdmin):
     form = ItemForm
-    list_display = ("name", "item_type", "status", "last_updated_at", "last_updated_by")
+    list_display = ("pk", "name", "item_type", "status", "last_updated_at", "last_updated_by")
     readonly_fields = ("created_by", "created_at", "last_updated_by", "last_updated_at")
     list_filter = ["status"]
 
 
 class CaseAdmin(admin.ModelAdmin):
-    list_display = ("item", "case_type", "memo", "last_updated_at", "last_updated_by")
+    list_display = ("pk", "case_type", "memo", "last_updated_at", "last_updated_by")
     readonly_fields = ("created_by", "created_at", "last_updated_by", "last_updated_at")
-
 
 
 admin.site.register(Area)
