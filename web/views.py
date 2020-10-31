@@ -58,6 +58,7 @@ class ItemList(ListView):
                         item_field_params[p] = params[p]
                     except Exception as e:
                         pass
+                query = query.filter(**item_field_params)
 
                 #「新着情報」リンク経由の場合
                 if 'period' in params:
