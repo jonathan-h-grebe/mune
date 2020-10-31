@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django_currentuser.middleware import get_current_authenticated_user
 from django.core.validators import RegexValidator
+from django.core.mail import send_mail
 # Create your models here.
 
 
@@ -12,12 +13,12 @@ class BaseModel(models.Model):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name="%(app_label)s_%(class)s_created_by",
-        verbose_name="作成者", editable=False
+        verbose_name="作成者", editable=False, null=True, blank=True,
     )
     last_updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name="%(app_label)s_%(class)s_last_updated_by",
-        verbose_name="最終更新者", editable=False
+        verbose_name="最終更新者", editable=False, null=True, blank=True,
     )
     is_active = models.BooleanField(default=True, verbose_name="有効")
 
@@ -25,9 +26,12 @@ class BaseModel(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.created_by = get_current_authenticated_user()
-        self.last_updated_by = get_current_authenticated_user()
+        try:
+            if not self.pk:
+                self.created_by = get_current_authenticated_user()
+            self.last_updated_by = get_current_authenticated_user()
+        except:
+            pass
         super(BaseModel, self).save(*args, **kwargs)
 
 
@@ -151,8 +155,35 @@ class Case(BaseModel):
     item_list = models.ManyToManyField(Item, verbose_name="問い合わせ商品", blank=True, related_name="item_list")
 
     def __str__(self):
-        return "Case{}_{}".format(self.pk, self.item.name)
+        return "Case_{}".format(self.pk)
 
     class Meta:
         verbose_name = "問い合わせ"
         verbose_name_plural = "問い合わせ"
+
+    def save(self, *args, **kwargs):
+        res = super(Case, self).save()
+        try:
+            text = "問い合わせを受け付けました<br><br>問い合わせ商品：<br>"
+            for i, item in enumerate(self.item_list.all()):
+                text += ' {}. {}<br>'.format(i+1, item.name)
+            text += "問い合わせ内容：{}<br>".format(self.case_type.name)
+            text += "問い合わせ詳細：{}<br>".format(self.memo)
+            text += "氏名：{}<br>".format(self.user_name)
+            text += "メールアドレス：{}<br>".format(self.mail_address)
+            text += "電話番号：{}<br>".format(self.tel_number)
+            text += "会社名：{}<br>".format(self.company_name)
+            text += "会社住所：{}<br>".format(self.company_address)
+            if self.mail_address:
+                send_mail(
+                    "【MachineMart】問い合わせを受け付けました",
+                    text,
+                    "no-reply@machine-mart.com",
+                    [self.mail_address, ],
+                    fail_silently=False,
+                    html_message=text
+                )
+        except Exception as e:
+            print(e)
+            print("Failed to send email")
+        return res

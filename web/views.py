@@ -141,7 +141,11 @@ class CaseCreate(CreateView):
         return res
 
     def get_success_url(self):
-        return reverse('web:case_detail', kwargs={'pk': self.object.pk})
+        messages.success(self.request, "問い合わせを受け付けました")
+        if self.request.user.is_authenticated:
+            return reverse('web:case_detail', kwargs={'pk': self.object.pk})
+        else:
+            return reverse('web:main')
 
     def form_valid(self, form):
         # form.instance.created_by_id = self.request.user.id

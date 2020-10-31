@@ -199,3 +199,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+
+# sendgrid
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", None)
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
