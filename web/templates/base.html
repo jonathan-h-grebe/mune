@@ -19,7 +19,7 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="{%url 'web:main' %}">テストサイト</a>
+      <a class="navbar-brand" href="{%url 'web:views.main' %}">テストサイト</a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -29,7 +29,7 @@
               装置を買う
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink_1">
-              <a class="dropdown-item" href="{% url 'web:item_list' %}?period=0">
+              <a class="dropdown-item" href="{% url 'web:new_item_list' %}?period=0">
                 新着情報
               </a>
               <a class="dropdown-item" href="{% url 'web:item_type_list' %}">
@@ -71,7 +71,7 @@
           </li>
 
           <li class="nav-item active">
-            <a class="nav-link" href="{%url 'web:main' %}">お問い合わせ <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{%url 'web:views.main' %}">お問い合わせ <span class="sr-only">(current)</span></a>
           </li>
         </ul>
 
