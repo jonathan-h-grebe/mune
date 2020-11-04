@@ -6,6 +6,7 @@ from web.models import Case, Item
 from web.forms import CaseForm
 from django.core.mail import send_mail
 
+
 class CaseCreate(CreateView):
     model = Case
     form_class = CaseForm

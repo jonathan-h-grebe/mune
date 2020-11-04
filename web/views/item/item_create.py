@@ -4,6 +4,7 @@ from django.views.generic import CreateView
 from django.urls import reverse
 from web.models import Item
 
+
 class ItemCreate(LoginRequiredMixin, CreateView):
     model = Item
     template_name = "web/item_create.html"

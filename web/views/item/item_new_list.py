@@ -4,6 +4,7 @@ from web.models import Item
 from django.contrib import messages
 from datetime import datetime, timedelta
 
+
 class NewItemList(ListView):
     model = Item
     template_name = "web/item_list.html"

@@ -3,6 +3,7 @@ from django.views.generic import ListView
 from web.models import Item
 from django.contrib import messages
 
+
 class MyItemList(LoginRequiredMixin, ListView):
     model = Item
     template_name = "web/my_item_list.html"
