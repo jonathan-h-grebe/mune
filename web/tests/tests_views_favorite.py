@@ -28,7 +28,7 @@ class ViewsFavoriteTest(TestCase):
         # loginしてなくてもOK
         response = self.client.get("{}?id={}".format(url, self.item.pk))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.client.session['idlist'], [1,])
+        self.assertEqual(self.client.session['idlist'], [self.item.pk])
 
     def test_favorite_item_list(self):
         """
