@@ -41,3 +41,5 @@ jobs:
         DB_PASSWORD: postgres
         DB_USER: postgres
         REDIRECT_DOMAINS: red.localhost:3000/
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SENDGRID_API_KEY: a
