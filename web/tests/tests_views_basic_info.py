@@ -6,12 +6,17 @@ from web.models import *
 
 class ViewsBasicInfoTest(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        u = get_user_model().objects.create_user('HogeTaro', 'taro@hoge.com', 'password')
+        # print(u.id)
+
     def setUp(self) -> None:
         """
         Set Up
         各テストメソッド実行時に呼び出されます。
         """
-        self.u = get_user_model().objects.create_user('HogeTaro', 'taro@hoge.com', 'password')
+        self.u = get_user_model().objects.first()
         # self.client.force_login(user=self.u)
 
     def test_advantage(self):

@@ -3,8 +3,8 @@ name: django unit test
 on: 
   pull_request:
     branches: [develop]
-#   push:
-#     branches: [ local_furuya ]
+  push:
+    branches: [ local_furuya ]
 
 
 jobs:

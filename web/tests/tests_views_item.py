@@ -6,17 +6,30 @@ from web.models import *
 
 class ViewsItemTest(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        u = get_user_model().objects.create_user('HogeTaro3', 'taro@hoge.com', 'password')
+        # print(u.id)
+
     def setUp(self) -> None:
         """
         Set Up
         各テストメソッド実行時に呼び出されます。
         """
+        # ログイン処理
+        self.u = get_user_model().objects.first()
+        res = self.client.login(username=self.u.username, password="password")
+        self.client.get("/")
+        # データ
         self.item_type = ItemType.objects.create(name="item_type")
         self.item = Item.objects.create(
             name="item", item_type=self.item_type,
             height=1, width=1, depth=1, status="作成中",
         )
-        self.u = get_user_model().objects.create_user('HogeTaro', 'taro@hoge.com', 'password')
+        # if self.item_type.created_by:
+        #     print(self.item_type.created_by.pk)
+        # print(self.u.pk)
+        self.client.logout()
         # self.client.force_login(user=self.u)
 
     def test_item_list(self):
@@ -51,7 +64,7 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         # loginしていればOK
-        self.client.force_login(user=self.u)
+        self.client.login(username=self.u.username, password="password")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("web/item_create.html")
@@ -68,7 +81,7 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         # loginしていればOK
-        self.client.force_login(user=self.u)
+        self.client.login(username=self.u.username, password="password")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("web/item_create.html")
@@ -85,7 +98,7 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         # loginしていればOK
-        self.client.force_login(user=self.u)
+        self.client.login(username=self.u.username, password="password")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("web/my_item_list.html")
@@ -111,7 +124,7 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         # loginしてもgetはNG
-        self.client.force_login(user=self.u)
+        self.client.login(username=self.u.username, password="password")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         # loginしてPOSTであればOK。my_item_listにリダイレクトされる＆itemのステータスが更新
