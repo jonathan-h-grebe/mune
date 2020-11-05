@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.urls import reverse
 from web.models import Item
 
+
 class ItemUpdate(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = "web/item_create.html"

@@ -1,5 +1,6 @@
 from django import forms
 from web.models import Item, Case
+from django.core.exceptions import ValidationError
 
 
 class ItemForm(forms.ModelForm):
@@ -23,6 +24,14 @@ class ItemForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
         instance = kwargs.get("instance")
+
+    def clean_model_year(self):
+        data = self.cleaned_data['model_year']
+        print(data)
+        if True:
+            raise ValidationError("年式を入れてください")
+        raise ValidationError("年式を入れてください")
+        return data
 
 
 class CaseForm(forms.ModelForm):
