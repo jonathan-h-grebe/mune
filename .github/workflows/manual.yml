@@ -41,7 +41,7 @@ jobs:
         SENDGRID_API_KEY: a
 
     - name: Django app test
-      run: python manage.py test --settings=mune.githubactions_settings
+      run: python manage.py test --settings=mune.githubactions_settings --keepdb
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         SENDGRID_API_KEY: a
