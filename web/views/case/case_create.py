@@ -72,6 +72,10 @@ class CaseCreate(CreateView):
             )
         return res
 
+    def form_invalid(self, form):
+        print(form.errors)
+        return super(CaseCreate, self).form_invalid(form)
+
     def get(self, request, *args, **kwargs):
         try:
             res = super().get(request, *args, **kwargs)

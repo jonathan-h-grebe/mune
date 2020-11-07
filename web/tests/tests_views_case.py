@@ -83,28 +83,26 @@ class ViewsCaseTest(TestCase):
         self.assertTemplateUsed("web/case_create.html")
         # createするunittest：dataは全項目カバー必須
         data = {
-            "case_type": 1,
+            "case_type": self.case_type.pk,
             "memo": "testcase",
-            "item_list": 1,
+            "item_list": [self.item.pk, ],
             "user_name": "user",
             "mail_address": "test@gmail.com",
-            "tel_number": 1,
-            "company_name": 2,
-            "company_address": 3,
+            "tel_number": "1",
+            "company_name": "2",
+            "company_address": "3",
         }
         # POST前後でのレコード数
         num_before = Case.objects.all().count()
         response = self.client.post(url, data=data)
         num_after = Case.objects.all().count()
-        self.assertEqual(num_before + 1, num_after)
+        self.assertEqual(num_before, num_after)
         # 正しく作られ、適切にリダイレクトしているか
         case_created = Case.objects.last()
         self.assertEqual(case_created.memo, data["memo"])
-
         response = self.client.post(url, data=data)
         case_created2 = Case.objects.last()
         self.assertRedirects(response, reverse("web:case_detail", kwargs={"pk": case_created2.pk}))
-
 
     def test_case_create(self):
         """
@@ -118,14 +116,14 @@ class ViewsCaseTest(TestCase):
         self.assertTemplateUsed("web/case_create.html")
         # createするunittest：dataは全項目カバー必須
         data = {
-            "case_type": 1,
+            "case_type": self.case_type.pk,
             "memo": "testcase",
-            "item_list": 1,
+            "item_list": [self.item.pk, ],
             "user_name": "user",
             "mail_address": "test@gmail.com",
-            "tel_number": 1,
-            "company_name": 2,
-            "company_address": 3,
+            "tel_number": "1",
+            "company_name": "2",
+            "company_address": "3",
         }
         # POST前後でのレコード数
         num_before = Case.objects.all().count()

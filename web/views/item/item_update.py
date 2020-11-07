@@ -22,3 +22,7 @@ class ItemUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         # form.instance.last_updated_by_id = self.request.user.id
         return super(ItemUpdate, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super(ItemUpdate, self).form_invalid(form)

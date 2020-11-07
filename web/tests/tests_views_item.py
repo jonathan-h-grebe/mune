@@ -69,7 +69,7 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("web/item_create.html")
-        # createするunittest：dataは全項目カバー必須
+        # updateするunittest：dataは全項目カバー必須
         data = {
             "is_active": True,
             "name": "テスト",
@@ -77,7 +77,7 @@ class ViewsItemTest(TestCase):
             "height": 1,
             "width": 1,
             "depth": 1,
-            "area": 1,
+            "area": self.area.pk,
             "image01": "",
             "image02": "",
             "image03": "",
@@ -123,7 +123,7 @@ class ViewsItemTest(TestCase):
             "height": 1,
             "width": 1,
             "depth": 1,
-            "area": 1,
+            "area": self.area.pk,
             "image01": "",
             "image02": "",
             "image03": "",

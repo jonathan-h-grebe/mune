@@ -23,3 +23,7 @@ class ItemCreate(LoginRequiredMixin, CreateView):
         # form.instance.created_by_id = self.request.user.id
         # form.instance.last_updated_by_id = self.request.user.id
         return super(ItemCreate, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super(ItemCreate, self).form_invalid(form)
