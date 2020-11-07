@@ -3,15 +3,17 @@ from django.views.generic import UpdateView
 from django.contrib import messages
 from django.urls import reverse
 from web.models import Item
+from web.forms import ItemForm
 
 
 class ItemUpdate(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = "web/item_create.html"
-    fields = [
-        'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
-        "image01", "image02", "image03", "image04", "image05",
-    ]
+    # fields = [
+    #     'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
+    #     "image01", "image02", "image03", "image04", "image05",
+    # ]
+    form_class = ItemForm
 
     def get_success_url(self):
         messages.success(self.request, "商品を更新しました")

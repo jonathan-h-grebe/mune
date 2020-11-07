@@ -3,15 +3,17 @@ from django.contrib import messages
 from django.views.generic import CreateView
 from django.urls import reverse
 from web.models import Item
+from web.forms import ItemForm
 
 
 class ItemCreate(LoginRequiredMixin, CreateView):
     model = Item
     template_name = "web/item_create.html"
-    fields = [
-        'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
-        "image01", "image02", "image03", "image04", "image05",
-    ]
+    # fields = [
+    #     'name', 'item_type', 'area', "price_type", 'height', "width", "depth",
+    #     "image01", "image02", "image03", "image04", "image05",
+    # ]
+    form_class = ItemForm
 
     def get_success_url(self):
         messages.success(self.request, "商品を登録しました")

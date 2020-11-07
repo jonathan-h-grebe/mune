@@ -21,6 +21,7 @@ class ViewsItemTest(TestCase):
         res = self.client.login(username=self.u.username, password="password")
         self.client.get("/")
         # データ
+        self.area = Area.objects.create(name="area", region="region")
         self.item_type = ItemType.objects.create(name="item_type")
         self.item = Item.objects.create(
             name="item", item_type=self.item_type,
@@ -68,8 +69,37 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("web/item_create.html")
-        # updateするunittestも追記したい
-        pass
+        # createするunittest：dataは全項目カバー必須
+        data = {
+            "is_active": True,
+            "name": "テスト",
+            "item_type": self.item_type.pk,
+            "height": 1,
+            "width": 1,
+            "depth": 1,
+            "area": 1,
+            "image01": "",
+            "image02": "",
+            "image03": "",
+            "image04": "",
+            "image05": "",
+            "maker": "メーカー",
+            "model_year": 1992,
+            "model_number": "TLX1992",
+            "model_detail": "詳細はこちら",
+            "price": 1000,
+            "price_minimum": 500,
+        }
+        # POST前後でのレコード数
+        num_before = Item.objects.all().count()
+        response = self.client.post(url, data=data)
+        num_after = Item.objects.all().count()
+        self.assertEqual(num_before, num_after)
+        # 正しく作られ、適切にリダイレクトしているか
+        item_updated = Item.objects.get(pk=self.item.pk)
+        self.assertEqual(item_updated.name, data["name"])
+        self.assertTemplateUsed("web/item_detail.html")
+        self.assertRedirects(response, reverse("web:item_detail", kwargs={"pk": item_updated.pk}))
 
     def test_item_create(self):
         """
@@ -85,8 +115,37 @@ class ViewsItemTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed("web/item_create.html")
-        # createするunittestも追記したい
-        pass
+        # createするunittest：dataは全項目カバー必須
+        data = {
+            "is_active": True,
+            "name": "テスト",
+            "item_type": self.item_type.pk,
+            "height": 1,
+            "width": 1,
+            "depth": 1,
+            "area": 1,
+            "image01": "",
+            "image02": "",
+            "image03": "",
+            "image04": "",
+            "image05": "",
+            "maker": "メーカー",
+            "model_year": 1992,
+            "model_number": "TLX1992",
+            "model_detail": "詳細はこちら",
+            "price": 1000,
+            "price_minimum": 500,
+        }
+        # POST前後でのレコード数
+        num_before = Item.objects.all().count()
+        response = self.client.post(url, data=data)
+        num_after = Item.objects.all().count()
+        self.assertEqual(num_before+1, num_after)
+        # 正しく作られ、適切にリダイレクトしているか
+        item_created = Item.objects.last()
+        self.assertEqual(item_created.name, data["name"])
+        self.assertTemplateUsed("web/item_detail.html")
+        self.assertRedirects(response, reverse("web:item_detail", kwargs={"pk": item_created.pk}))
 
     def test_item_my_list(self):
         """
