@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.views.generic import ListView
 from web.models import Case
 
+
 class CaseMyList(LoginRequiredMixin, ListView):
     model = Case
     template_name = "web/my_case_list.html"

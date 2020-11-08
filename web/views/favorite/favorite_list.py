@@ -1,5 +1,7 @@
 from django.views.generic import TemplateView
 from web.models import Item
+
+
 class FavoriteItemList(TemplateView):
     template_name = "web/favorite_item_list.html"
 
@@ -9,3 +11,4 @@ class FavoriteItemList(TemplateView):
             'object_list': Item.objects.filter(id__in=idlist),
         }
         return context
+

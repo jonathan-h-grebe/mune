@@ -36,15 +36,15 @@ class BaseModel(models.Model):
 
 
 class Area(BaseModel):
-    name = models.CharField(max_length=10, verbose_name="都道府県名")
-    region = models.CharField(max_length=10, verbose_name="地域")
+    name = models.CharField(max_length=255, verbose_name="都道府県名")
+    region = models.CharField(max_length=255, verbose_name="地域")
 
     def __str__(self):
         return self.name
 
 
 class ItemType(BaseModel):
-    name = models.CharField(max_length=100, verbose_name="装置分類名")
+    name = models.CharField(max_length=255, verbose_name="装置分類名")
 
     def __str__(self):
         return self.name
@@ -63,19 +63,26 @@ class Item(BaseModel):
         ("承認済み", "承認済み"), ("商談中", "商談中"),
         ("成約済み", "成約済み"), ("取り下げ", "取り下げ"),
     )
-    name = models.CharField(max_length=100, verbose_name="名前")
+    name = models.CharField(max_length=255, verbose_name="名前")
     item_type = models.ForeignKey(ItemType, on_delete=models.DO_NOTHING, verbose_name="装置分類")
     height = models.FloatField(verbose_name="高さ")
     width = models.FloatField(verbose_name="横幅")
     depth = models.FloatField(verbose_name="奥行")
-    price_type = models.CharField(max_length=30, verbose_name="価格帯", choices=CHOICES_PRICE_TYPE)
+    price_type = models.CharField(max_length=255, verbose_name="価格帯", choices=CHOICES_PRICE_TYPE, blank=True, null=True)
     area = models.ForeignKey(Area, verbose_name="在庫都道府県", on_delete=models.DO_NOTHING, null=True)
-    status = models.CharField(max_length=20, verbose_name="ステータス", choices=CHOICES_STATUS, default="作成中")
+    status = models.CharField(max_length=255, verbose_name="ステータス", choices=CHOICES_STATUS, default="作成中")
     image01 = models.ImageField(verbose_name="画像01", blank=True, null=True, upload_to="images/")
     image02 = models.ImageField(verbose_name="画像02", blank=True, null=True, upload_to="images/")
     image03 = models.ImageField(verbose_name="画像03", blank=True, null=True, upload_to="images/")
     image04 = models.ImageField(verbose_name="画像04", blank=True, null=True, upload_to="images/")
     image05 = models.ImageField(verbose_name="画像05", blank=True, null=True, upload_to="images/")
+    # 2020/11/03
+    maker = models.CharField(verbose_name="メーカー", max_length=255, blank=True, null=True)
+    model_number = models.CharField(verbose_name="型式/型番", max_length=255, blank=True, null=True)
+    model_year = models.IntegerField(verbose_name="年式", blank=True, null=True)
+    model_detail = models.TextField(verbose_name="仕様", blank=True, null=True)
+    price = models.IntegerField(verbose_name="希望価格", blank=True, null=True)
+    price_minimum = models.IntegerField(verbose_name="下限価格", blank=True, null=True, help_text="画面には表示しない")
 
     def __str__(self):
         return "Item{}_{}".format(self.pk, self.name)
@@ -139,13 +146,13 @@ class Case(BaseModel):
     )
     case_type = models.ForeignKey(CaseType, on_delete=models.DO_NOTHING, verbose_name="問い合わせ分類")
     # 2020/10/25追加
-    user_name = models.CharField(max_length=30, verbose_name="氏名", blank=True, null=True, )
+    user_name = models.CharField(max_length=255, verbose_name="氏名", blank=True, null=True, )
     mail_address = models.EmailField(verbose_name="メールアドレス", blank=True, null=True, )
     company_name = models.CharField(
-        max_length=100, verbose_name="会社名", blank=True, null=True,
+        max_length=255, verbose_name="会社名", blank=True, null=True,
     )
     company_address = models.CharField(
-        max_length=100, verbose_name="会社住所", blank=True, null=True,
+        max_length=255, verbose_name="会社住所", blank=True, null=True,
     )
     tel_number = models.CharField(
         validators=[tel_number_regex], max_length=15, verbose_name='携帯電話番号',

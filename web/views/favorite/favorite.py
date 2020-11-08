@@ -2,6 +2,7 @@ from django.views.generic import View
 from django.contrib import messages
 from django.shortcuts import redirect
 
+
 class Favorite(View):
     def get(self, request):
         idlist = request.session.get('idlist', list())

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.contrib import messages
 from django.views.generic import ListView
 
+
 class ItemList(ListView):
     model = Item
     template_name = "web/item_list.html"

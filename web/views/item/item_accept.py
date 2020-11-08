@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from web.models import Item
 
+
 class AcceptRequest(LoginRequiredMixin, View):
 
     def get(self, request):
