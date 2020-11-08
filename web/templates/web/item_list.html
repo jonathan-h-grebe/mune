@@ -60,7 +60,7 @@ Item List
                href="{%url 'web:favorite' %}?id={{o.pk}}">追加済み</a>
             {% else %}
             <a class="btn btn-warning"
-               href="{%url 'web:favorite' %}?id={{o.pk}}">気になる</a>
+               href="{%url 'web:favorite' %}?id={{o.pk}}&source=item_list">気になる</a>
             {% endif %}
             {% else %}
             <a class="btn btn-primary disabled"
