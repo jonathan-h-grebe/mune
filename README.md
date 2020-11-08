@@ -7,6 +7,11 @@ pip3 install -r requirement.txt
 python3 manage.py migrate --settings=mune.local_settings
 ```
 
+### ユーザ作成
+```sh
+python3 manage.py createsuperuser --settings=mune.local_settings
+```
+
 ### node
 まだ準備中（2020/11/08）
 ```sh
