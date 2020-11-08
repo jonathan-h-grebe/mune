@@ -14,6 +14,7 @@ My　Case List
     <table class="table">
       <tr>
         <th>ID</th>
+        <th>ステータス</th>
         <th>種別</th>
         <th>メモ</th>
       </tr>
@@ -22,6 +23,7 @@ My　Case List
         <td>
           <a href="{%url 'web:case_detail' pk=o.id%}">{{o.id}}</a>
         </td>
+        <td>{{o.status}}</td>
         <td>{{o.case_type}}</td>
         <td>{{o.memo}}</td>
       </tr>

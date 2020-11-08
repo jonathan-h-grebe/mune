@@ -42,10 +42,15 @@ class CaseCreate(CreateView):
         if self.request.user.is_authenticated:
             return reverse('web:case_detail', kwargs={'pk': self.object.pk})
         else:
-            return reverse('web:views.main')
+            return reverse('web:main')
 
     def form_valid(self, form):
         res = super(CaseCreate, self).form_valid(form)
+        # 問い合わせたものはお気に入りから削除
+        idlist = self.request.session.get('idlist', list())
+        check_list = idlist + [i.pk for i in self.object.item_list.all()]
+        self.request.session["idlist"] = [x for x in set(check_list) if check_list.count(x) == 1]
+        # メール発出
         text = "<p>問い合わせを受け付けました</p><br><p>問い合わせ商品：</p>"
         for i, item in enumerate(self.object.item_list.all()):
             text += '<p> {}. {}</p>'.format(i + 1, item.name)
@@ -66,6 +71,10 @@ class CaseCreate(CreateView):
                 html_message=text
             )
         return res
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super(CaseCreate, self).form_invalid(form)
 
     def get(self, request, *args, **kwargs):
         try:

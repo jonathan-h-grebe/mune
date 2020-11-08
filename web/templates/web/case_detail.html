@@ -33,6 +33,10 @@ Case Detail
         <td>{{object.case_type.name}}</td>
       </tr>
       <tr>
+        <th>ステータス</th>
+        <td>{{object.status}}</td>
+      </tr>
+      <tr>
         <th>問い合わせ内容</th>
         <td>{{object.memo}}</td>
       </tr>
@@ -51,14 +55,6 @@ Case Detail
       <tr>
         <th>最終更新者</th>
         <td>{{object.last_updated_by}}</td>
-      </tr>
-      <tr>
-        <th>担当者登録日時</th>
-        <td>{{object.assinged_at}}</td>
-      </tr>
-      <tr>
-        <th>担当者</th>
-        <td>{{object.assigned_to}}</td>
       </tr>
     </table>
   </div>

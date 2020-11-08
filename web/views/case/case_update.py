@@ -3,16 +3,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import UpdateView
 from django.urls import reverse
 from web.models import Case
+from web.forms import CaseForm
 
 
 class CaseUpdate(LoginRequiredMixin, UpdateView):
     model = Case
     template_name = "web/case_create.html"
-    fields = [
-        # 'item',
-        'case_type', "memo", "item_list",
-        "user_name", "mail_address", "tel_number", "company_name", "company_address"
-    ]
+    # fields = [
+    #     # 'item',
+    #     'case_type', "memo", "item_list",
+    #     "user_name", "mail_address", "tel_number", "company_name", "company_address"
+    # ]
+    form_class = CaseForm
 
     def get_success_url(self):
         messages.success(self.request, "問い合わせを更新しました")
@@ -26,3 +28,7 @@ class CaseUpdate(LoginRequiredMixin, UpdateView):
         context = super().get_context_data()
         context['items'] = self.object.item_list.all()
         return context
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super(CaseUpdate, self).form_invalid(form)
