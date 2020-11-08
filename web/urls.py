@@ -6,10 +6,10 @@ from web.views.main_page import main_page
 from web.views.question import question
 from web.views.basic_info import flow_info, advantage_info, company_info, price_info 
 from web.views.case import case_create, case_detail, case_list, case_my_list, case_update
-from web.views.item import item_accept, item_create, item_detail, item_list, item_my_list, item_new_list, item_update, item_new_list
+from web.views.item import item_accept, item_create, item_detail, item_list, item_my_list, item_new_list, item_update
 from web.views.search_by import area_list, item_type_list
 from web.views.favorite import favorite, favorite_list
-from web.views.restframework.views_restframework import ItemViewSet
+from web.views.restframework.views_restframework import ItemViewSet, CaseViewSet
 
 
 app_name = 'web'
@@ -52,3 +52,4 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register('item', ItemViewSet)
+router.register('case', CaseViewSet)

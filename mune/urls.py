@@ -19,10 +19,12 @@ from django.contrib.staticfiles.urls import static
 from django.conf import settings
 from rest_framework import routers
 from web.urls import router as web_routers
+from accounts.urls import router as accounts_routers
 
 
 router = routers.DefaultRouter()
 router.registry.extend(web_routers.registry)
+router.registry.extend(accounts_routers.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -2,10 +2,24 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from datetime import datetime
-from .models import Item
+from .models import Item, Case, ItemType, CaseType
+
+
+class ItemTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemType
+        fields = '__all__'
+
+
+class CaseTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CaseType
+        fields = '__all__'
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    item_type = ItemTypeSerializer()
+
     class Meta:
         model = Item
         fields = '__all__'
@@ -22,3 +36,12 @@ class ItemSerializer(serializers.ModelSerializer):
     #     u = get_user_model().objects.first()
     #     instance.save_from_shell(u)
     #     return instance
+
+
+class CaseSerializer(serializers.ModelSerializer):
+    item_list = ItemSerializer(many=True)
+    case_type = CaseTypeSerializer()
+
+    class Meta:
+        model = Case
+        fields = '__all__'
