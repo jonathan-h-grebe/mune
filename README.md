@@ -13,7 +13,6 @@ python3 manage.py createsuperuser --settings=mune.local_settings
 ```
 
 ### node
-まだ準備中（2020/11/08）
 ```sh
 cd front
 npm install
@@ -27,10 +26,25 @@ python3 manage.py runserver 8081 --settings=mune.local_settings
 
 
 ### node.js
-まだ準備中（2020/11/08）
 defaultで8080で動く？
 ```sh
 cd front
 npm run serve
 ```
 
+---
+
+# Branch
+## 各自のブランチ
+ご自由にどうぞ
+
+## develop
+各自のブランチからdevelopへPullRequestをお願いします。
+Unittestが動くので、念の為チェックする 
+ 
+## master
+developからmasterへPullRequestを作成する
+マージされると、herokuへ反映されます
+（2020/11/08時点では、Vueは未対応）
+
+---
