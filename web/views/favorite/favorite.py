@@ -10,7 +10,12 @@ class Favorite(View):
             id = int(request.GET['id'])
             if not id in idlist:
                 idlist.append(id)
-        request.session['idlist'] = idlist
-        request.COOKIES['idlist'] = idlist
-        messages.success(request, "お気に入りに追加しました")
-        return redirect('web:item_list')
+                request.session['idlist'] = idlist
+                messages.success(request, "お気に入りに追加しました")
+            else:
+                messages.warning(request, "お気に入りに追加済みです")
+        source = request.GET.get("source", None)
+        if source == "item_detail":
+            return redirect('web:item_detail', pk=id)
+        elif source == "item_list" or not source:
+            return redirect('web:item_list')

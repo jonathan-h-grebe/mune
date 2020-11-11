@@ -132,13 +132,16 @@ class CaseType(BaseModel):
 
 
 class Case(BaseModel):
+    CHOICES_STATUS = (
+        ("確認中", "確認中"), ("対応中", "対応中"), ("クローズ", "クローズ"),
+    )
     tel_number_regex = RegexValidator(
         regex=r'^[0-9]+$', message=("携帯電話番号はハイフンなしで入力してください"),
     )
     # Fields
     objects = None
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="商品", blank=True, null=True)
-    memo = models.TextField(verbose_name="備考", blank=True, null=True)
+    memo = models.TextField(verbose_name="問い合わせ詳細", blank=True, null=True)
     assigned_at = models.DateTimeField(verbose_name="アサイン日時", blank=True, null=True)
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name="assigned_to",
@@ -160,6 +163,8 @@ class Case(BaseModel):
     )
     # いくつもItemを紐付ける
     item_list = models.ManyToManyField(Item, verbose_name="問い合わせ商品", blank=True, related_name="item_list")
+    # 2020-11-07追加
+    status = models.CharField(verbose_name="ステータス", default="確認中", choices=CHOICES_STATUS, max_length=255, )
 
     def __str__(self):
         return "Case_{}".format(self.pk)

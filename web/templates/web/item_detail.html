@@ -59,6 +59,26 @@ Item Detail
         <th>最終更新者</th>
         <td>{{object.last_updated_by}}</td>
       </tr>
+      <tr>
+        <th>メーカー</th>
+        <td>{{object.maker}}</td>
+      </tr>
+      <tr>
+        <th>型式/型番</th>
+        <td>{{object.model_number}}</td>
+      </tr>
+      <tr>
+        <th>年式</th>
+        <td>{{object.model_year}}</td>
+      </tr>
+      <tr>
+        <th>仕様</th>
+        <td>{{object.model_detail}}</td>
+      </tr>
+      <tr>
+        <th>希望価格</th>
+        <td>{{object.price}}</td>
+      </tr>
     </table>
   </div>
   <div class="col-6">
@@ -83,7 +103,7 @@ Item Detail
        href="{%url 'web:favorite' %}?id={{object.pk}}">追加済み</a>
     {% else %}
     <a class="btn btn-warning"
-       href="{%url 'web:favorite' %}?id={{object.pk}}">気になる</a>
+       href="{%url 'web:favorite' %}?id={{object.pk}}&source=item_detail">気になる</a>
     {% endif %}
   </div>
 </div>
