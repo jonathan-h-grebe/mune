@@ -11,6 +11,15 @@ Area List
 
 <div class="row">
   <div class="col-12">
+    <br>
+    <form method="get" action="{%url 'web:area_list' %}">
+    {% for key, value in area_checkbox_data.items %}
+    <span> <input type="checkbox" name="{{key}}" {% if value %} checked="checked"{% endif %} > {{key}}</span>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">フィルター</button>
+    </form>
+    <br><br>
+
    <table class="table">
      <tr>
        <th>ID</th>
