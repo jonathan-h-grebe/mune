@@ -2,7 +2,7 @@ from web.models import Item
 from datetime import datetime, timedelta
 from django.contrib import messages
 from django.views.generic import ListView
-from django.db.models import Q
+
 
 class ItemList(ListView):
     model = Item
@@ -11,34 +11,28 @@ class ItemList(ListView):
     #一覧用Itemデータを抽出
     def get_queryset(self):
         try:
-            all_items_query = Item.objects.all()
-            #「フィルタ」ボタンが押下された場合
+            query = Item.objects.exclude(status__in=("作成中", "承認待ち", "取り下げ"))
             if self.request.GET:
-                params = self.request.GET.copy()
+                area_list = self.request.GET.getlist("area_list", [])
 
-                query_condition = Q()
-                #reqのurlパラメータから、Itemのfieldと該当するものを取得
-                item_field_params = dict()
-                for p in params:
-                    try:
-                        Item._meta.get_field(p)
-                        item_field_params[p] = params[p]
-                        #fieldと該当するqueryのOR条件を作成
-                        query_condition |= Q( **{p:params[p]}  )
+                #「まとめて Check」ボタンが押下された場合
+                if len(area_list) > 0:
+                    query = query.filter(area__in=area_list)    
+                #「まとめて Check」ボタン以外の条件有りの場合
+                else:
+                    params = self.request.GET.copy()
+                    #reqのurlパラメータから、Itemのfieldと該当するものを取得
+                    item_field_params = dict()
+                    for p in params:
+                        try:
+                            Item._meta.get_field(p)
+                            item_field_params[p] = params[p]
+                        except Exception as e:
+                            pass
+                    query = query.filter(**item_field_params)
 
-                    #Itemのfieldと該当しないurlパラメータを無視する
-                    except Exception as e:
-                        pass
-
-                selected_items = all_items_query.filter(query_condition)
-
-                return selected_items
+            return query
             
-            else:
-                return all_items_query
-
         except Exception as e:
             messages.error(self.request, e)
             return super().get_queryset()
-
-

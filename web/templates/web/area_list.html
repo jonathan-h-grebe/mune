@@ -12,16 +12,13 @@ Area List
 <div class="row">
   <div class="col-12">
     <br>
-    <form method="get" action="{%url 'web:area_list' %}">
-    {% for key, value in area_checkbox_data.items %}
-    <span> <input type="checkbox" name="{{key}}" {% if value %} checked="checked"{% endif %} > {{key}}</span>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary">フィルター</button>
-    </form>
+    <form method="get" action="{%url 'web:item_list' %}">
+    <button type="submit" class="btn btn-primary">まとめて Check</button>
     <br><br>
 
    <table class="table">
      <tr>
+       <th></th>
        <th>ID</th>
        <th>地方</th>
        <th>都道府県</th>
@@ -30,6 +27,9 @@ Area List
      </tr>
      {% for o in object_list %}
      <tr>
+      <td>
+        <input type="checkbox" name="area_list" value="{{o.pk}}">
+      </td>
        <td>{{o.id}}</td>
        <td>{{o.region}}</td>
        <td>{{o.name}}</td>
@@ -44,6 +44,7 @@ Area List
      </tr>
      {% endfor %}
    </table>
+  </form>
   </div>
 <!--  <div class="col-6">-->
 <!--    <p>-->
